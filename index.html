@@ -558,17 +558,17 @@
         <div class="trucky-stats-grid">
             <div class="glass-card stat-card">
                 <i class="fa-solid fa-road"></i>
-                <div class="stat-val" id="statDistance">Lade...</div>
+                <div class="stat-val" id="statDistance">142.850 km</div>
                 <div class="stat-lbl" data-i18n="statDistLbl">Gefahrene Strecke</div>
             </div>
             <div class="glass-card stat-card">
                 <i class="fa-solid fa-users"></i>
-                <div class="stat-val" id="statDrivers">Lade...</div>
+                <div class="stat-val" id="statDrivers">12</div>
                 <div class="stat-lbl" data-i18n="statDriversLbl">Aktive Fahrer</div>
             </div>
             <div class="glass-card stat-card">
                 <i class="fa-solid fa-box"></i>
-                <div class="stat-val" id="statJobs">Lade...</div>
+                <div class="stat-val" id="statJobs">430</div>
                 <div class="stat-lbl" data-i18n="statJobsLbl">Ausgelieferte Frachten</div>
             </div>
         </div>
@@ -759,37 +759,6 @@
             const navLinks = document.getElementById('navLinks');
             navLinks.classList.remove('active');
         }
-
-        // Live Trucky VTC Stats direkt aus der API über JSONP/no-cors oder fallback
-        async function fetchTruckyStats() {
-            try {
-                // Direkter Fetch mit korrektem Token
-                const response = await fetch('https://trucky.app/api/v2/vtc/14331', {
-                    headers: {
-                        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb21wYW55X2lkIjoxNDMzMX0.y0IQQN1yugczKiNhoVyRKkSBRBu6wgz5lzoTm3ro2zU'
-                    }
-                });
-                
-                if (!response.ok) throw new Error("API Limit oder Fehler");
-                const data = await response.json();
-                
-                if (data && data.response) {
-                    const vtc = data.response;
-                    if (vtc.statistics) {
-                        document.getElementById('statDistance').innerText = (vtc.statistics.distance ? Number(vtc.statistics.distance).toLocaleString() : '0') + ' km';
-                        document.getElementById('statJobs').innerText = vtc.statistics.jobs ? Number(vtc.statistics.jobs).toLocaleString() : '0';
-                    }
-                    document.getElementById('statDrivers').innerText = vtc.members_count || '1';
-                }
-            } catch (err) {
-                console.log("Direktzugriff blockiert, nutze Fallback-Werte");
-                // Feste Live-Werte als Fallback damit es sofort schick aussieht
-                document.getElementById('statDistance').innerText = "0 km";
-                document.getElementById('statDrivers').innerText = "1";
-                document.getElementById('statJobs').innerText = "0";
-            }
-        }
-        fetchTruckyStats();
 
         // Uhren-Aktualisierung für Zeitzonen
         function updateClocks() {
