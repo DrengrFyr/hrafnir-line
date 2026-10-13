@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRAFNIR LINE — Forged By The North</title>
+
+    <!-- OpenGraph & Discord Preview Meta Tags -->
+    <meta name="title" content="HRAFNIR LINE — Forged By The North">
+    <meta name="description" content="Official Virtual Trucking Company based in Odense, Denmark. ETS2 & ATS Brotherhood carrying the Nordic spirit across Europe.">
+    <meta name="theme-color" content="#32BEFF">
+    
+    <!-- OpenGraph / Facebook / Discord Embed -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hrafnirline.eu/">
+    <meta property="og:title" content="HRAFNIR LINE — Forged By The North">
+    <meta property="og:description" content="Official Virtual Trucking Company based in Odense, Denmark. Join our fleet in ETS2 & ATS.">
+    <meta property="og:image" content="https://trucky.app/storage/vtc/logos/14331.png">
+
+    <!-- Twitter Embed -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="HRAFNIR LINE — Forged By The North">
+    <meta property="twitter:description" content="Official Virtual Trucking Company based in Odense, Denmark. ETS2 & ATS Brotherhood.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://trucky.app/storage/vtc/logos/14331.png">
+
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --nordic-blue: #14202D;
+            --ice-blue: #32BEFF;
+            --steel-silver: #D2DCE6;
+            --glass-bg: rgba(20, 32, 45, 0.55);
+            --glass-border: rgba(50, 190, 255, 0.2);
+            --glass-glow: rgba(50, 190, 255, 0.12);
+            --card-radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Canvas Hintergrund */
+        #aurora-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo i { color: var(--ice-blue); }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--steel-silver);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--ice-blue); }
+
+        /* Mobile Menu Toggle Button */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--ice-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Language Switcher Dropdown */
+        .lang-switch {
+            background: rgba(50, 190, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--ice-blue);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .lang-switch option {
+            background: #14202D;
+            color: #fff;
+        }
+
+        .lang-switch:hover {
+            border-color: var(--ice-blue);
+            box-shadow: 0 0 10px rgba(50, 190, 255, 0.3);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        /* Glass Card Base */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(50, 190, 255, 0.4);
+            box-shadow: 0 15px 40px var(--glass-glow);
+        }
+
+        /* Hero / Startseite */
+        .hero {
+            text-align: center;
+            padding-top: 170px;
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            background: linear-gradient(180deg, #ffffff 0%, var(--steel-silver) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            color: var(--ice-blue);
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+        }
+
+        .hero-text {
+            max-width: 850px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--steel-silver);
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+
+        .meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .pill {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: var(--steel-silver);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pill i { color: var(--ice-blue); }
+
+        .cta-buttons { 
+            display: flex; 
+            gap: 15px; 
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--ice-blue);
+            color: #000;
+            box-shadow: 0 0 20px rgba(50, 190, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(50, 190, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: #fff;
+        }
+
+        /* Timezones Bar */
+        .tz-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: var(--steel-silver);
+        }
+
+        .tz-item {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tz-item span { color: var(--ice-blue); font-weight: 600; }
+
+        /* Live Telemetrie Bar */
+        .trucky-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--ice-blue);
+            margin-bottom: 12px;
+        }
+
+        .stat-val {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-lbl {
+            font-size: 0.85rem;
+            color: var(--steel-silver);
+            margin-top: 5px;
+        }
+
+        /* Shieldwall Code & Requirements Grid */
+        .code-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .code-box h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--ice-blue);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-box ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .code-box li {
+            font-size: 0.92rem;
+            color: var(--steel-silver);
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .code-box li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: var(--ice-blue);
+        }
+
+        /* Fuhrpark Grid */
+        .fleet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .truck-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .truck-specs {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--steel-silver);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Members Section */
+        .members-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .member-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .member-info h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #555;
+            display: inline-block;
+        }
+
+        .status-dot.online {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .role-badge {
+            display: inline-block;
+            background: rgba(50, 190, 255, 0.15);
+            color: var(--ice-blue);
+            border: 1px solid var(--ice-blue);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .member-actions {
+            position: absolute;
+            top: 15px; right: 15px;
+            display: none; gap: 8px;
+        }
+
+        .admin-active .member-actions { display: flex; }
+
+        .btn-icon {
+            background: rgba(255,0,0,0.2);
+            border: 1px solid rgba(255,0,0,0.4);
+            color: #ff5555;
+            width: 30px; height: 30px;
+            border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+
+        .btn-icon:hover { background: #ff5555; color: #000; }
+
+        /* Rules & FAQ Accordion */
+        .rule-item, .faq-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .rule-item:last-child, .faq-item:last-child { border-bottom: none; margin-bottom: 0; }
+        .rule-item h3, .faq-item h3 { font-size: 1.1rem; color: var(--ice-blue); margin-bottom: 8px; }
+        .rule-item p, .faq-item p { font-size: 0.9rem; color: var(--steel-silver); line-height: 1.6; }
+
+        /* Discord Form */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--steel-silver); margin-bottom: 8px; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; background: rgba(0,0,0,0.6);
+            border: 1px solid var(--glass-border);
+            padding: 12px 16px; border-radius: 10px; color: #fff; outline: none;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--ice-blue); }
+
+        /* Modals */
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            display: none; align-items: center; justify-content: center; z-index: 2000;
+        }
+        .modal-content { width: 90%; max-width: 450px; }
+
+        /* Toast notification */
+        #toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--ice-blue); color: #000;
+            padding: 12px 25px; border-radius: 30px; font-weight: 600;
+            transform: translateY(100px); opacity: 0; transition: 0.3s; z-index: 3000;
+        }
+        #toast.show { transform: translateY(0); opacity: 1; }
+
+        /* Mobile View Media Queries */
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 75px;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px;
+                flex-direction: column;
+                padding: 20px 0;
+                gap: 15px;
+                display: none;
+                box-shadow: 0 15px 30px rgba(0,0,0,0.8);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero {
+                padding-top: 140px;
+            }
+
+            .hero h1 {
+                font-size: 2.3rem;
+                letter-spacing: 2px;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.7rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            nav {
+                width: 95%;
+                padding: 10px 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+                padding: 0 20px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .meta-pills {
+                gap: 10px;
+            }
+
+            .pill {
+                font-size: 0.78rem;
+                padding: 8px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="aurora-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#start" class="nav-logo">
+            <i class="fa-solid fa-shield-halved"></i> HRAFNIR LINE
+        </a>
+        <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#start" data-i18n="navStart" onclick="closeMobileMenu()">Startseite</a></li>
+            <li><a href="#code" data-i18n="navCode" onclick="closeMobileMenu()">Shieldwall Code</a></li>
+            <li><a href="#fleet" data-i18n="navFleet" onclick="closeMobileMenu()">Unser Fuhrpark</a></li>
+            <li><a href="#members" data-i18n="navMembers" onclick="closeMobileMenu()">Unsere Mitglieder</a></li>
+            <li><a href="#rules" data-i18n="navRules" onclick="closeMobileMenu()">Regeln</a></li>
+            <li><a href="#faq" onclick="closeMobileMenu()">FAQ</a></li>
+            <li><a href="#apply" data-i18n="navApply" onclick="closeMobileMenu()">Bewerben</a></li>
+            <li>
+                <select class="lang-switch" id="langSelect" onchange="changeLanguage(this.value)">
+                    <option value="de">🇩🇪 DE</option>
+                    <option value="en">🇬🇧 EN</option>
+                    <option value="da">🇩🇰 DA</option>
+                </select>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Startseite / Hero -->
+    <section class="hero" id="start">
+        <h1>HRAFNIR LINE</h1>
+        <div class="hero-subtitle">FORGED BY THE NORTH</div>
+        <p class="hero-text" data-i18n="heroText">
+            Where ancient roots meet the open road and the horizon never ends, the heart of Hrafnir Line beats. Bound by the heritage of Odense, Denmark, we carry the raw spirit of the North to the highways of Europe and across the ocean.<br><br>
+            We are more than just a VTC—we are a brotherhood of drivers who value precision, loyalty, and passion above all else. From the sun-drenched routes of the South to the legendary fjord roads beneath the flickering Aurora, we ride with endurance, unity, and unwavering pride.<br><br>
+            <em>Become part of the legend.</em>
+        </p>
+        
+        <div class="meta-pills">
+            <div class="pill"><i class="fa-solid fa-location-dot"></i> HQ: Odense, Denmark</div>
+            <div class="pill"><i class="fa-solid fa-globe"></i> Global Team</div>
+            <div class="pill"><i class="fa-solid fa-truck-fast"></i> ETS2 & ATS</div>
+            <div class="pill"><i class="fa-solid fa-axe"></i> Nordic Professionalism</div>
+        </div>
+
+        <div class="cta-buttons">
+            <a href="https://discord.gg/8pScHeC48S" target="_blank" class="btn btn-primary"><i class="fa-brands fa-discord"></i> <span data-i18n="btnDiscord">Discord beitreten</span></a>
+            <a href="https://hub.truckyapp.com/vtc/HL-Nordic" target="_blank" class="btn btn-secondary"><i class="fa-solid fa-truck"></i> <span>Trucky Hub</span></a>
+            <a href="https://vtc.haulmp.com/HrafnirLine?view=public" target="_blank" class="btn btn-secondary"><i class="fa-solid fa-truck-arrow-right"></i> <span>HaulMP Hub</span></a>
+        </div>
+
+        <!-- Nordic Timezones Widget -->
+        <div class="tz-container">
+            <div class="tz-item"><i class="fa-regular fa-clock"></i> Odense (HQ): <span id="tzOdense">--:--</span> CET</div>
+            <div class="tz-item"><i class="fa-regular fa-clock"></i> London: <span id="tzLondon">--:--</span> GMT</div>
+            <div class="tz-item"><i class="fa-regular fa-clock"></i> Reykjavik: <span id="tzReyk">--:--</span> GMT</div>
+            <div class="tz-item"><i class="fa-regular fa-clock"></i> Oslo: <span id="tzOslo">--:--</span> CET</div>
+        </div>
+    </section>
+
+    <!-- Live Telemetrie Stats -->
+    <section style="padding-top: 10px;">
+        <div class="trucky-stats-grid">
+            <div class="glass-card stat-card">
+                <i class="fa-solid fa-road"></i>
+                <div class="stat-val" id="statDistance">-- km</div>
+                <div class="stat-lbl" data-i18n="statDistLbl">Gefahrene Strecke</div>
+            </div>
+            <div class="glass-card stat-card">
+                <i class="fa-solid fa-users"></i>
+                <div class="stat-val" id="statDrivers">--</div>
+                <div class="stat-lbl" data-i18n="statDriversLbl">Aktive Fahrer</div>
+            </div>
+            <div class="glass-card stat-card">
+                <i class="fa-solid fa-box"></i>
+                <div class="stat-val" id="statJobs">--</div>
+                <div class="stat-lbl" data-i18n="statJobsLbl">Ausgelieferte Frachten</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shieldwall Code & Entry Standards -->
+    <section id="code">
+        <h2 class="section-title" data-i18n="titleCode">⚔️ Shieldwall Code</h2>
+        <div class="code-grid">
+            <div class="glass-card code-box">
+                <h3 data-i18n="codeReqHead"><i class="fa-solid fa-shield-halved"></i> Requirements for Entry</h3>
+                <ul data-i18n="codeReqList">
+                    <li>Du benötigst eine legale Kopie von ETS2 oder ATS und startbereites TruckersMP.</li>
+                    <li>Sichere Kommunikation auf Englisch.</li>
+                    <li>Ein verknüpfter Trucky-Account für deine Fahrten.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card code-box">
+                <h3 data-i18n="codeVikHead"><i class="fa-solid fa-crown"></i> The Viking Standard</h3>
+                <ul data-i18n="codeVikList">
+                    <li><strong>Drive with Honour:</strong> Respektiere die Straße, die Regeln und deine Mitfahrer.</li>
+                    <li><strong>Follow the Jarls:</strong> Akzeptiere Entscheidungen der Führung und halte deine Position im Konvoi.</li>
+                    <li><strong>Show Your Colours:</strong> Sei aktiv, sei präsent und vertrete die Flotte mit Stolz.</li>
+                    <li><strong>Keep the Peace:</strong> Bewahre eine freundliche, bodenständige Atmosphäre.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card code-box">
+                <h3 data-i18n="codeBonHead"><i class="fa-solid fa-dice-d20"></i> Bonus Skills & Pride</h3>
+                <ul data-i18n="codeBonList">
+                    <li>VTC-Vorerfahrung ist immer willkommen.</li>
+                    <li>Liebe zu kalten, verschlungenen Straßen des Nordens und langen Distanzen.</li>
+                    <li>Verlässlichkeit bei Events und aktive Teilnahme in unserem Discord.</li>
+                </ul>
+            </div>
+        </div>
+
+        <p style="text-align: center; color: var(--steel-silver); font-size: 0.95rem; margin-top: 25px; font-style: italic;" data-i18n="codeFooter">
+            "Missachtung unseres Codes oder rücksichtsloses Verhalten führt zum Ausschluss aus der Flotte. Kein Platz in Valhall bleibt für Ehrlose reserviert. Bleib wachsam."
+        </p>
+    </section>
+
+    <!-- Fuhrpark -->
+    <section id="fleet">
+        <h2 class="section-title" data-i18n="titleFleet">Unser Fuhrpark</h2>
+        <div class="fleet-grid">
+            <div class="glass-card truck-card">
+                <h3>Mercedes-Benz New Actros (2014)</h3>
+                <p style="color: var(--steel-silver); font-size: 0.9rem;" data-i18n="truckMerc">Verlässliche Ingenieurskunst für alle Fernstraßen Europas.</p>
+                <div class="truck-specs">
+                    <span><i class="fa-solid fa-gauge-high"></i> <span data-i18n="engine">Motor</span>: OM 473 Euro VI</span>
+                    <span><i class="fa-solid fa-gears"></i> <span data-i18n="power">Leistung</span>: 625 PS</span>
+                </div>
+            </div>
+            <div class="glass-card truck-card">
+                <h3>Scania S (2016)</h3>
+                <p style="color: var(--steel-silver); font-size: 0.9rem;" data-i18n="truckScania">Nordische Eleganz mit brutaler V8-Power.</p>
+                <div class="truck-specs">
+                    <span><i class="fa-solid fa-gauge-high"></i> <span data-i18n="engine">Motor</span>: Scania V8 King</span>
+                    <span><i class="fa-solid fa-gears"></i> <span data-i18n="power">Leistung</span>: 730 PS</span>
+                </div>
+            </div>
+            <div class="glass-card truck-card">
+                <h3>Volvo FH6</h3>
+                <p style="color: var(--steel-silver); font-size: 0.9rem;" data-i18n="truckVolvo">Skandinavischer Titan für raueste Wetterbedingungen.</p>
+                <div class="truck-specs">
+                    <span><i class="fa-solid fa-gauge-high"></i> <span data-i18n="engine">Motor</span>: D16K Euro VI</span>
+                    <span><i class="fa-solid fa-gears"></i> <span data-i18n="power">Leistung</span>: 750 PS</span>
+                </div>
+            </div>
+            <div class="glass-card truck-card">
+                <h3>DAF NGD</h3>
+                <p style="color: var(--steel-silver); font-size: 0.9rem;" data-i18n="truckDaf">Next Generation DAF — Aerodynamik und modernste Kabine.</p>
+                <div class="truck-specs">
+                    <span><i class="fa-solid fa-gauge-high"></i> <span data-i18n="engine">Motor</span>: PACCAR MX-13</span>
+                    <span><i class="fa-solid fa-gears"></i> <span data-i18n="power">Leistung</span>: 530 PS</span>
+                </div>
+            </div>
+            <div class="glass-card truck-card">
+                <h3>Renault T</h3>
+                <p style="color: var(--steel-silver); font-size: 0.9rem;" data-i18n="truckRenault">Effizienter, ausdauernder Allrounder für jede Distanz.</p>
+                <div class="truck-specs">
+                    <span><i class="fa-solid fa-gauge-high"></i> <span data-i18n="engine">Motor</span>: DTI 13</span>
+                    <span><i class="fa-solid fa-gears"></i> <span data-i18n="power">Leistung</span>: 520 PS</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mitglieder -->
+    <section id="members">
+        <div class="members-header">
+            <h2 class="section-title" style="margin-bottom:0;" data-i18n="titleMembers">Unsere Mitglieder</h2>
+            <button class="btn btn-primary" id="addMemberBtn" style="display:none;" onclick="openAddMemberModal()" data-i18n="btnAddDriver">+ Fahrer hinzufügen</button>
+        </div>
+        <div class="members-grid" id="membersContainer"></div>
+    </section>
+
+    <!-- Regeln -->
+    <section id="rules">
+        <h2 class="section-title" data-i18n="titleRules">⚔️ HRAFNIR LINE — Company Regulations</h2>
+        <div class="glass-card">
+            <p style="color: var(--steel-silver); font-size: 0.95rem; margin-bottom: 25px;" data-i18n="rulesIntro">
+                Um die hohen Standards und das professionelle Umfeld von HRAFNIR LINE zu wahren, müssen sich alle Mitglieder an die folgenden Regeln halten. Nichteinhaltung kann zu Verwarnungen, Suspendierung oder Ausschluss führen.
+            </p>
+            <div class="rule-item">
+                <h3 data-i18n="r1Head">1. Conduct & Shieldwall</h3>
+                <p data-i18n="r1Text">Respekt gegenüber allen Mitgliedern, Partnern und externen Communities. Keine Toleranz für Toxizität, Belästigung, Hassrede oder Diskriminierung. Professionelle Kommunikation ist Pflicht.</p>
+            </div>
+            <div class="rule-item">
+                <h3 data-i18n="r2Head">2. Standards of the Road</h3>
+                <p data-i18n="r2Text">Rücksichtsloses Fahren, Blockieren und Rammen sind streng verboten. Einhaltung aller offiziellen TruckersMP-Regeln ist Pflicht. Achte auf ein sauberes Erscheinungsbild mit Firmen-Tags und Lackierung.</p>
+            </div>
+            <div class="rule-item">
+                <h3 data-i18n="r3Head">3. Engagement & Activity</h3>
+                <p data-i18n="r3Text">Regelmäßige Aktivität wird erwartet. Längere unangekündigte Inaktivität kann zum Ausschluss führen. Aktive Teilnahme an Konvois hält die Flotte stark.</p>
+            </div>
+            <div class="rule-item">
+                <h3 data-i18n="r4Head">4. Discord Guidelines</h3>
+                <p data-i18n="r4Text">Gespräche gehören in die passenden Kanäle. Kein Spam oder unaufgeforderte Eigenwerbung. Englisch ist Hauptsprache. NSFW-, illegale oder anstößige Inhalte sind verboten.</p>
+            </div>
+            <div class="rule-item">
+                <h3 data-i18n="r5Head">5. Convoy Protocols</h3>
+                <p data-i18n="r5Text">Folge allen Anweisungen der Konvoi-Leitung. Sichere Abstände einhalten, Überholen im Konvoi ist streng verboten (außer nach Anweisung).</p>
+            </div>
+            <div class="rule-item">
+                <h3 data-i18n="r6Head">6. Governance & Management</h3>
+                <p data-i18n="r6Text">Entscheidungen der Geschäftsführung sind final. Anliegen bitte privat über Tickets klären. Missbrauch von Telemetrie oder Systemen wird direkt geahndet.</p>
+            </div>
+            <p style="text-align: center; color: var(--ice-blue); font-family: 'Cinzel', serif; margin-top: 25px; font-weight: 700;" data-i18n="rulesFooter">
+                HRAFNIR LINE steht für echte Professionalität, Zusammenhalt und den rauen Geist des nordischen Fernverkehrs. Forged in Odin's Realm.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ Bereich -->
+    <section id="faq">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="glass-card">
+            <div class="faq-item">
+                <h3 data-i18n="faq1Head">Wie verzeichne ich meine gefahrenen Kilometer?</h3>
+                <p data-i18n="faq1Text">Wir nutzen Trucky zur Abrechnung.</p>
+            </div>
+            <div class="faq-item">
+                <h3 data-i18n="faq2Head">Wo finde ich die offiziellen Firmenfarben und RGB-Werte?</h3>
+                <p data-i18n="faq2Text">Unsere Lackierungen und exakten RGB-Werte findest du exklusiv auf unserem Discord-Server im geschützten Fahrerbereich.</p>
+            </div>
+            <div class="faq-item">
+                <h3 data-i18n="faq3Head">Gibt es eine monatliche Mindestkilometer-Pflicht?</h3>
+                <p data-i18n="faq3Text">Wir schätzen Qualität und Gemeinschaft mehr als erzwungenen Stress. Regelmäßige Aktivität und Teilnahme an Konvois halten deinen Platz in der Spedition sicher.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bewerbung -->
+    <section id="apply">
+        <h2 class="section-title" data-i18n="titleApply">Bewerbung einreichen</h2>
+        <div class="glass-card" style="max-width: 600px; margin: 0 auto;">
+            <form id="discordApplyForm" onsubmit="sendApplication(event)">
+                <div class="form-group">
+                    <label data-i18n="lblUsername">Dein Ingame- / Discord Name</label>
+                    <input type="text" id="appUsername" required placeholder="z.B. Drengr Fyr">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="lblTruck">Wunsch-Truck</label>
+                    <select id="appTruck" required>
+                        <option value="Scania S (2016)">Scania S (2016)</option>
+                        <option value="Volvo FH6">Volvo FH6</option>
+                        <option value="Mercedes-Benz New Actros">Mercedes-Benz New Actros</option>
+                        <option value="DAF NGD">DAF NGD</option>
+                        <option value="Renault T">Renault T</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="lblText">Kurze Vorstellung</label>
+                    <textarea id="appText" rows="4" required placeholder="Warum möchtest du HRAFNIR LINE beitreten?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fa-brands fa-discord"></i> <span data-i18n="btnSubmit">Bewerbung absenden</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Verstecktes Admin Modal -->
+    <div class="modal" id="loginModal">
+        <div class="glass-card modal-content">
+            <h3 style="font-family:'Cinzel', serif; margin-bottom: 20px;">Admin Modus Login</h3>
+            <div class="form-group">
+                <label>Admin E-Mail</label>
+                <input type="email" id="loginEmail" placeholder="m.piet1995@proton.me">
+            </div>
+            <div class="form-group">
+                <label>Passwort</label>
+                <input type="password" id="loginPassword" placeholder="••••••••">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-primary" style="flex:1; justify-content:center;" onclick="handleLogin()">Freischalten</button>
+                <button class="btn btn-secondary" onclick="closeLoginModal()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle Script
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
